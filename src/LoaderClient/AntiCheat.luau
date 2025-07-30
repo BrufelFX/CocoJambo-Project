@@ -7,8 +7,7 @@ local rs = game.ReplicatedStorage
 
 local framework = require(rs.Framework)
 
-local remoteFolder = rs:WaitForChild("Remote")
-local antiCheatRemote = remoteFolder:WaitForChild("AntiCheat")
+local antiCheatRemote = framework:GetRemoteEvent("AntiCheat")
 
 local player = game.Players.LocalPlayer
 local character = player.Character
@@ -46,7 +45,7 @@ function AntiCheatModule.DetectNoclip()
 		local root = character:FindFirstChild("HumanoidRootPart")
 
 		if root then
-			local touchingParts = workspace:GetPartBoundsInBox(root.CFrame, root.Size / 1.4)
+			local touchingParts = workspace:GetPartBoundsInBox(root.CFrame, root.Size / 1.5)
 
 			for _, part in pairs(touchingParts) do
 				if part.CanCollide and not part:IsDescendantOf(character) then

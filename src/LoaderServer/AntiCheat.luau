@@ -3,10 +3,10 @@ local AntiCheatModule = {
 }
 
 local rs = game.ReplicatedStorage
-local remoteFolder = rs:WaitForChild("Remote")
-local antiCheatRemote = remoteFolder:WaitForChild("AntiCheat")
 
 local framework = require(rs.Framework)
+local antiCheatRemote = framework:GetRemoteEvent("AntiCheat")
+
 
 function AntiCheatModule.GenereteCode()
 	local code = math.random(0, 123456)
