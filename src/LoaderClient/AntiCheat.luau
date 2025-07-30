@@ -1,6 +1,7 @@
 local RunService = game:GetService("RunService")
 local AntiCheatModule = {
 	code = 0,
+	timeFly = 0,
 }
 local rs = game.ReplicatedStorage
 
@@ -31,7 +32,7 @@ function AntiCheatModule.DetectTeleport()
 		delay(1, function()
 			local PositionSecond = HumanoidRootPart.Position
 
-			if (PositionSecond - PositionFirst).Magnitude > 140 then
+			if (PositionSecond - PositionFirst).Magnitude > 60 then
 				AntiCheatModule.Ban()
 			end
 		end)
@@ -45,13 +46,38 @@ function AntiCheatModule.DetectNoclip()
 		local root = character:FindFirstChild("HumanoidRootPart")
 
 		if root then
-			local touchingParts = workspace:GetPartBoundsInBox(root.CFrame, root.Size / 1.5)
+			local touchingParts = workspace:GetPartBoundsInBox(root.CFrame, root.Size / 1.4)
 
 			for _, part in pairs(touchingParts) do
 				if part.CanCollide and not part:IsDescendantOf(character) then
 					AntiCheat.Detected("Noclip")
 				end
 			end
+		end
+	end
+end
+
+function AntiCheatModule.DetectFly()
+	local HumanoidRootPart = character.HumanoidRootPart
+
+	if HumanoidRootPart then
+		local origin = HumanoidRootPart.Position
+		local direction = Vector3.new(0, -5, 0)
+
+		local raycastParams = RaycastParams.new()
+		raycastParams.FilterDescendantsInstances = { character }
+		raycastParams.FilterType = Enum.RaycastFilterType.Exclude
+
+		local result = workspace:Raycast(origin, direction, raycastParams)
+
+		if not result and humanoid.FloorMaterial == Enum.Material.Air then
+			AntiCheatModule.timeFly += RunService.RenderStepped:Wait()
+
+			if AntiCheatModule.timeFly > 2 then
+				AntiCheatModule.Ban()
+			end
+		else
+			AntiCheatModule.timeFly = 0
 		end
 	end
 end
@@ -99,6 +125,7 @@ end)
 RunService.RenderStepped:Connect(function(deltaTime)
 	AntiCheatModule.DetectTeleport()
 	AntiCheatModule.DetectNoclip()
+	AntiCheatModule.DetectFly()
 end)
 
 framework.OnClientEvent("AntiCheat", function(code)
