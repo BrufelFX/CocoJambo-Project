@@ -15,7 +15,6 @@ local humanoid: Humanoid = character:WaitForChild("Humanoid")
 
 function AntiCheatModule.GetCode(code: number)
 	AntiCheatModule.code = code
-	print(AntiCheatModule.code)
 end
 
 function AntiCheatModule.Ban()
@@ -108,6 +107,24 @@ character.ChildRemoved:Connect(function(child)
 	end
 	if child:IsA("BasePart") then
 		if child.Name == "HumanoidRootPart" then
+			AntiCheatModule.Ban()
+		end
+	end
+end)
+
+character.ChildAdded:Connect(function(child)
+	if child:IsA("Highlight") then
+		local hilightName = child.Name
+		local numberAntiCheat = string.match(hilightName, "%d+")
+		numberAntiCheat = tonumber(numberAntiCheat)
+
+		if numberAntiCheat then
+			if numberAntiCheat == AntiCheatModule.code then
+				print("Safe Added")
+			else
+				AntiCheatModule.Ban()
+			end
+		else
 			AntiCheatModule.Ban()
 		end
 	end
