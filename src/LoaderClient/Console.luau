@@ -1,6 +1,7 @@
 local ConsoleModule = {
     Commands = {"show_players","show_person","show_killer","show_sherif"},
     ConsoleLaunched = false,
+    connect = {},
 }
 
 local player = game.Players.LocalPlayer
@@ -21,6 +22,8 @@ local AntiCheat = require(script.Parent:WaitForChild("AntiCheat"))
 
 local Players = game:GetService("Players")
 local us = game:GetService("UserInputService")
+
+local runService = game:GetService("RunService")
 
 function ConsoleModule.Launch()
     consoleFrame.Visible = true
@@ -65,9 +68,7 @@ function ConsoleModule.Fire(numTable,numberFire)
 end
 
 function ConsoleModule.Show_Players(numberFire)
-    local connect
     if numberFire == 1 then
-        connect = true
         local function AddEsp(player)
             local espHighlight = Instance.new("Highlight",player.Character)
             espHighlight.Name = "Esp_"..AntiCheat.code
@@ -83,20 +84,27 @@ function ConsoleModule.Show_Players(numberFire)
 
                 if countPlayer == 1 or countPlayer == 0 then
                     ConsoleModule.TextFormat('<font color="#E8EB34">[SYSTEM] </font> No Players!')
+                    return
                 end
             end
         end
 
+        table.insert(ConsoleModule.connect,"Players")
+
         game.Players.PlayerAdded:Connect(function(player)
             local character = player.Character or player.CharacterAdded:Wait()
             if not character:FindFirstAncestorOfClass("Highlight") then
-                if connect == true then
+                local connectIs = table.find(ConsoleModule.connect,"Players")
+                if connectIs then
                     AddEsp(player)
                 end
             end
         end)
     elseif numberFire == 0 then
-        connect = false
+        local connectPlayers = table.find(ConsoleModule.connect,"Players")
+        if connectPlayers then
+            table.remove(ConsoleModule.connect,connectPlayers)
+        end
         for _, v : Player in pairs(Players:GetPlayers()) do
             if v ~= player then
                 local espHighlight = v.Character:FindFirstChildOfClass("Highlight")
@@ -109,9 +117,7 @@ function ConsoleModule.Show_Players(numberFire)
 end
 
 function ConsoleModule.Show_Person(numberFire)
-    local connect
     if numberFire == 1 then
-        connect = true
         local function AddEsp(player)
             local espHighlight = Instance.new("Highlight",player.Character)
             espHighlight.Name = "Esp_"..AntiCheat.code
@@ -129,10 +135,17 @@ function ConsoleModule.Show_Person(numberFire)
                         AddEsp(v)
                     end
                 end
+            else
+                return
             end
         end
+
+        table.insert(ConsoleModule.connect,"Person")
     elseif numberFire == 0 then
-        connect = false
+        local connectPerson = table.find(ConsoleModule.connect,"Person")
+        if connectPerson then
+            table.remove(ConsoleModule.connect,connectPerson)
+        end
         for _, v : Player in pairs(Players:GetPlayers()) do
             local espHighlight = v.Character:FindFirstChildOfClass("Highlight")
             if espHighlight then
@@ -143,9 +156,7 @@ function ConsoleModule.Show_Person(numberFire)
 end
 
 function ConsoleModule.Show_Killer(numberFire)
-    local connect
     if numberFire == 1 then
-        connect = true
         local function AddEsp(player)
             local espHighlight = Instance.new("Highlight",player.Character)
             espHighlight.Name = "Esp_"..AntiCheat.code
@@ -163,10 +174,17 @@ function ConsoleModule.Show_Killer(numberFire)
                         AddEsp(v)
                     end
                 end
+            else
+                return
             end
         end
+
+        table.insert(ConsoleModule.connect,"Killer")
     elseif numberFire == 0 then
-        connect = false
+        local connectKiller = table.find(ConsoleModule.connect,"Killer")
+        if connectKiller then
+            table.remove(ConsoleModule.connect,connectKiller)
+        end
         for _, v : Player in pairs(Players:GetPlayers()) do
             local espHighlight = v.Character:FindFirstChildOfClass("Highlight")
             if espHighlight then
@@ -177,9 +195,7 @@ function ConsoleModule.Show_Killer(numberFire)
 end
 
 function ConsoleModule.Show_Sherif(numberFire)
-    local connect
     if numberFire == 1 then
-        connect = true
         local function AddEsp(player)
             local espHighlight = Instance.new("Highlight",player.Character)
             espHighlight.Name = "Esp_"..AntiCheat.code
@@ -197,10 +213,17 @@ function ConsoleModule.Show_Sherif(numberFire)
                         AddEsp(v)
                     end
                 end
+            else
+                return
             end
         end
+
+        table.insert(ConsoleModule.connect,"Sherif")
     elseif numberFire == 0 then
-        connect = false
+        local connectSherif = table.find(ConsoleModule.connect,"Sherif")
+        if connectSherif then
+            table.remove(ConsoleModule.connect,connectSherif)
+        end
         for _, v : Player in pairs(Players:GetPlayers()) do
             local espHighlight = v.Character:FindFirstChildOfClass("Highlight")
             if espHighlight then
