@@ -1,5 +1,6 @@
+local LocalizationService = game:GetService("LocalizationService")
 local ConsoleModule = {
-    Commands = {"show_players","show_person","show_killer","show_sherif"},
+    Commands = {"show_players","show_person","show_killer","show_sherif","kill_all"},
     ConsoleLaunched = false,
     connect = {},
 }
@@ -19,6 +20,7 @@ local scrollingFrame : ScrollingFrame = consoleFrame:WaitForChild("ScrollingFram
 local textInput : TextBox = consoleFrame:WaitForChild("TextInput")
 
 local AntiCheat = require(script.Parent:WaitForChild("AntiCheat"))
+local framework = require(rs:FindFirstChild("Framework"))
 
 local Players = game:GetService("Players")
 local us = game:GetService("UserInputService")
@@ -64,6 +66,8 @@ function ConsoleModule.Fire(numTable,numberFire)
         ConsoleModule.Show_Killer(numberFire)
     elseif  numTable == 4 then
         ConsoleModule.Show_Sherif(numberFire)
+    elseif numTable == 5 then
+        ConsoleModule.Kill_All()
     end
 end
 
@@ -230,6 +234,15 @@ function ConsoleModule.Show_Sherif(numberFire)
                 espHighlight:Destroy()
             end
         end
+    end
+end
+
+function ConsoleModule.Kill_All()
+    local adminRemote : RemoteFunction = framework:GetRemoteEvent("Admin")
+    local callback = adminRemote:InvokeServer(AntiCheat.code,"kill_all")
+
+    if callback then
+        ConsoleModule.TextFormat(tostring(callback))
     end
 end
 

@@ -8,7 +8,8 @@ local GameManagerModule = {
 }
 
 local rs = game.ReplicatedStorage
-local Framework = require(rs.Framework)
+local framework = require(rs.Framework)
+local countDownRemote : RemoteEvent = framework:GetRemoteEvent("CountDown")
 
 function GameManagerModule.Countdown(Sec,GameType)
 	local CountdownTask
@@ -16,7 +17,7 @@ function GameManagerModule.Countdown(Sec,GameType)
 	CountdownTask = function()
 		for i = Sec,0,-1 do
 			task.wait(1)
-			Framework.FireAllClients("CountDown",i)
+			countDownRemote:FireAllClients(i)
 		end
 
 		if GameType == "Start" then

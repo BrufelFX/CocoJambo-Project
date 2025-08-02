@@ -1,7 +1,8 @@
 local GameManagerModule = {}
 
 local rs = game.ReplicatedStorage
-local Framework = require(rs.Framework)
+local framework = require(rs.Framework)
+local countDownRemote : RemoteEvent = framework:GetRemoteEvent("CountDown")
 
 function GameManagerModule.UpdateTextCountDown(sec)
     local player = game.Players.LocalPlayer
@@ -20,8 +21,7 @@ function GameManagerModule.UpdateTextCountDown(sec)
     end
 end
 
-
-Framework.OnClientEvent("CountDown",function(sec)
+countDownRemote.OnClientEvent:Connect(function(sec)
     GameManagerModule.UpdateTextCountDown(sec)
 end)
 

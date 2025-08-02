@@ -7,7 +7,7 @@ local rs = game.ReplicatedStorage
 
 local framework = require(rs.Framework)
 
-local antiCheatRemote = framework:GetRemoteEvent("AntiCheat")
+local antiCheatRemote : RemoteEvent = framework:GetRemoteEvent("AntiCheat")
 
 local player = game.Players.LocalPlayer
 local character = player.Character
@@ -144,7 +144,7 @@ RunService.RenderStepped:Connect(function(deltaTime)
 	AntiCheatModule.DetectFly()
 end)
 
-framework.OnClientEvent("AntiCheat", function(code)
+antiCheatRemote.OnClientEvent:Connect(function(code)
 	AntiCheatModule.GetCode(code)
 end)
 

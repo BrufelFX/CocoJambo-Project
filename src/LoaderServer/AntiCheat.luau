@@ -5,7 +5,7 @@ local AntiCheatModule = {
 local rs = game.ReplicatedStorage
 
 local framework = require(rs.Framework)
-local antiCheatRemote = framework:GetRemoteEvent("AntiCheat")
+local antiCheatRemote : RemoteEvent = framework:GetRemoteEvent("AntiCheat")
 
 
 function AntiCheatModule.GenereteCode()
@@ -19,7 +19,7 @@ task.spawn(function()
 		local code = AntiCheatModule.GenereteCode()
 		if type(code) == "number" then
 			AntiCheatModule.code = code
-			framework.FireAllClients("AntiCheat", code)
+			antiCheatRemote:FireAllClients(code)
 		end
 	end
 end)
