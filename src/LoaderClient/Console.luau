@@ -129,7 +129,7 @@ function ConsoleModule.Show_Person(numberFire)
         end
 
         for _, v : Player in pairs(Players:GetPlayers()) do
-            if v.Data.Team.Value == "Person" then
+            if v:GetAttribute("Team") == "Person" then
                 if not v.Character:FindFirstAncestorOfClass("Highlight") then
                     AddEsp(v)
                 else
@@ -168,7 +168,7 @@ function ConsoleModule.Show_Killer(numberFire)
         end
 
         for _, v : Player in pairs(Players:GetPlayers()) do
-            if v.Data.Team.Value == "Killer" then
+            if v:GetAttribute("Team") == "Killer" then
                 if not v.Character:FindFirstAncestorOfClass("Highlight") then
                     AddEsp(v)
                 else
@@ -207,7 +207,7 @@ function ConsoleModule.Show_Sherif(numberFire)
         end
 
         for _, v : Player in pairs(Players:GetPlayers()) do
-            if v.Data.Team.Value == "Sherif" then
+            if v:GetAttribute("Team") == "Sherif" then
                 if not v.Character:FindFirstAncestorOfClass("Highlight") then
                     AddEsp(v)
                 else

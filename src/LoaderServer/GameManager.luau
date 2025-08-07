@@ -46,6 +46,9 @@ function GameManagerModule.Start()
 			GameManagerModule.Los()
 		else
 			print("Nie wystarczająca liczba osób")
+			wait(2)
+			print("Poczekam Troche Dłużej")
+			GameManagerModule.Countdown(120,"Start")
 		end
 	end
 end
@@ -54,7 +57,7 @@ function GameManagerModule.EndedLosy()
 	for _, graczeLista in pairs(GameManagerModule.playersToMatch) do
 		if graczeLista.opis == "NieWybrany" then
 			GameManagerModule.ChangeOpisPlayer(graczeLista.Gracz,"Wybrany")
-			graczeLista.Gracz.Data.Team.Value = GameManagerModule.teams[1]
+			graczeLista.Gracz:SetAttribute("Team",GameManagerModule.teams[1])
 			GameManagerModule.teamsUsed[1] += 1
 
 			for _, graczeListaKolejna in pairs(GameManagerModule.playersToMatch) do
@@ -107,7 +110,7 @@ function GameManagerModule.LosKiller()
 	if GameManagerModule.teamsCountMax[2] > GameManagerModule.teamsUsed[2] then
 		if PickUpRandomKiller then
 			GameManagerModule.ChangeOpisPlayer(PickUpRandomKiller,"Wybrany")
-			PickUpRandomKiller.Data.Team.Value = GameManagerModule.teams[2]
+			PickUpRandomKiller:SetAttribute("Team",GameManagerModule.teams[2])
 			GameManagerModule.teamsUsed[2] = 1
 			print("Wybrano killera " .. PickUpRandomKiller.Name)
 			table.clear(PlayerNotChosed)
@@ -136,7 +139,7 @@ function GameManagerModule.LosSherif()
 	if GameManagerModule.teamsCountMax[3] > GameManagerModule.teamsUsed[3] then
 		if PickUpRandomSherif then
 			GameManagerModule.ChangeOpisPlayer(PickUpRandomSherif,"Wybrany")
-			PickUpRandomSherif.Data.Team.Value = GameManagerModule.teams[3]
+			PickUpRandomSherif:SetAttribute("Team",GameManagerModule.teams[3])
 			GameManagerModule.teamsUsed[3] = 1
 			print("Wybrano sherif " .. PickUpRandomSherif.Name)
 			table.clear(PlayerNotChosed)
@@ -154,7 +157,7 @@ function GameManagerModule.LosPerson()
 		if v.opis == "NieWybrany" then
 			GameManagerModule.teamsUsed[1] += 1
 			GameManagerModule.ChangeOpisPlayer(v.Gracz,"Wybrany")
-			v.Gracz.Data.Team.Value = GameManagerModule.teams[1]
+			v.Gracz:SetAttribute("Team",GameManagerModule.teams[1])
 		end
 	end
 

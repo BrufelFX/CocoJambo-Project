@@ -14,32 +14,18 @@ local GameManager = require(script.Parent.GameManager)
 local rs = game.ReplicatedStorage
 local assets = rs:WaitForChild("Assets")
 
-players.PlayerAdded:Connect(function(player)
+players.PlayerAdded:Connect(function(player : Player)
 	local Data = Instance.new("Folder", player)
 	Data.Name = "Data"
 
-	local Team = Instance.new("StringValue", Data)
-	Team.Name = "Team"
-	Team.Value = "None"
+	player:SetAttribute("Team","None")
+	player:SetAttribute("Cash",100)
+	player:SetAttribute("Level",1)
+	player:SetAttribute("Exp",0)
+	player:SetAttribute("ExpNextLevel",100)
 
-	local Cash = Instance.new("NumberValue",Data)
-	Cash.Name = "Cash"
-	Cash.Value = 100
-
-	local Level = Instance.new("NumberValue",Data)
-	Level.Name = "Level"
-	Level.Value = 1
-
-	local Exp = Instance.new("NumberValue",Data)
-	Exp.Name = "Exp"
-	Exp.Value = 0
-
-	local ExpNextLevel = Instance.new("NumberValue",Data)
-	ExpNextLevel.Name = "ExpNextLevel"
-	ExpNextLevel.Value = 100
-
-	Exp.Changed:Connect(function(value)
-		if Exp.Value >= ExpNextLevel.Value then
+	player:GetAttributeChangedSignal("Exp"):Connect(function()
+		if player:GetAttribute("Exp") >= player:GetAttribute("ExpNextLevel") then
 			DataPlayer.NextLevel(player)
 		end
 	end)
@@ -54,33 +40,33 @@ players.PlayerAdded:Connect(function(player)
 
 			if nameText and levelText then
 				nameText.Text = player.Name
-				levelText.Text = tostring(Level.Value)
+				levelText.Text = tostring(player:GetAttribute("Level"))
 				statsTag.Parent = Head
-
-				if DataPlayer.LevelColor[Level.Value] then
-					levelText.TextColor3 = DataPlayer.LevelColor[Level.Value]
+				if player:GetAttribute("Level") >= 5 and player:GetAttribute("Level") < 15 then
+					levelText.TextColor3 = DataPlayer.LevelColor[5]
+				elseif player:GetAttribute("Level") >= 15 and player:GetAttribute("Level") < 25 then
+					levelText.TextColor3 = DataPlayer.LevelColor[15]
+				elseif player:GetAttribute("Level") >= 25 and player:GetAttribute("Level") < 40 then
+					levelText.TextColor3 = DataPlayer.LevelColor[25]
+				elseif player:GetAttribute("Level") >= 40 then
+					levelText.TextColor3 = DataPlayer.LevelColor[40]
 				end
 			end
 
-			Level.Changed:Connect(function()
-				if DataPlayer.LevelColor[Level.Value] then
-					levelText.TextColor3 = DataPlayer.LevelColor[Level.Value]
+			player:GetAttributeChangedSignal("Level"):Connect(function()
+				if DataPlayer.LevelColor[player:GetAttribute("Level")] then
+					levelText.TextColor3 = DataPlayer.LevelColor[player:GetAttribute("Level")]
 				end
-				levelText.Text = tostring(Level.Value)
+				levelText.Text = tostring(player:GetAttribute("Level"))
 			end)
 		end
 	end)
 end)
 
 function DataPlayer.NextLevel(player)
-	local data : Folder = player.Data
-	local Exp : NumberValue = data.Exp
-	local ExpNextLevel : NumberValue = data.ExpNextLevel
-	local Level : NumberValue = data.Level
-
-	Exp.Value = 0
-	ExpNextLevel.Value *= 2
-	Level.Value += 1
+	player:SetAttribute("Exp",0)
+	player:SetAttribute("ExpNextLevel",player:GetAttribute("ExpNextLevel") * 1.2)
+	player:SetAttribute("Level",player:GetAttribute("Level") + 1) 
 end
 
 GameManager.Countdown(30,"Start")
