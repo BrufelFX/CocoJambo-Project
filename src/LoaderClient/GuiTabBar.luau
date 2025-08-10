@@ -67,6 +67,35 @@ function GuiTabBarModule.UpdateLevelTextColor()
 	end
 end
 
+function GuiTabBarModule.EffectMouseEnter(button)
+    local uiStroke : UIStroke = button:FindFirstChild("UIStroke")
+
+    TweenService:Create(uiStroke,TweenInfo.new(0.1,Enum.EasingStyle.Sine,Enum.EasingDirection.In,0,false), {Color = Color3.fromRGB(255,255,255)}):Play()
+end
+
+function GuiTabBarModule.EffectMouseLeave(button)
+    local uiStroke : UIStroke = button:FindFirstChild("UIStroke")
+
+    TweenService:Create(uiStroke,TweenInfo.new(0.1,Enum.EasingStyle.Sine,Enum.EasingDirection.In,0,false), {Color = Color3.fromRGB(0,0,0)}):Play()
+end
+
+
+for _, buttons : ImageButton in pairs(topFrame:GetChildren()) do
+    if buttons:IsA("ImageButton") then
+        buttons.MouseButton1Click:Connect(function()
+            print(buttons.Name)
+        end)
+
+        buttons.MouseEnter:Connect(function()
+            GuiTabBarModule.EffectMouseEnter(buttons)
+        end)
+
+        buttons.MouseLeave:Connect(function()
+            GuiTabBarModule.EffectMouseLeave(buttons)
+        end)
+    end
+end
+
 if game:IsLoaded() then
     GuiTabBarModule.Load()
 end

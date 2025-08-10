@@ -23,6 +23,8 @@ players.PlayerAdded:Connect(function(player : Player)
 	player:SetAttribute("Level",1)
 	player:SetAttribute("Exp",0)
 	player:SetAttribute("ExpNextLevel",100)
+	player:SetAttribute("Kills",0)
+	player:SetAttribute("Escapes",0)
 
 	player:GetAttributeChangedSignal("Exp"):Connect(function()
 		if player:GetAttribute("Exp") >= player:GetAttribute("ExpNextLevel") then
