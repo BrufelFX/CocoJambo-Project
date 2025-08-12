@@ -8,7 +8,7 @@ function GameManagerModule.UpdateTextCountDown(sec)
     local player = game.Players.LocalPlayer
     local playerGui = player:WaitForChild("PlayerGui")
 
-    local gameGui = playerGui.Game
+    local gameGui = playerGui:WaitForChild("Game")
     local folderCountDown = gameGui:WaitForChild("Countdown")
     local textCount : TextLabel = folderCountDown:WaitForChild("Count")
     textCount.Text = tostring(sec)

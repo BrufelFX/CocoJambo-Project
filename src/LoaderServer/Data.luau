@@ -22,7 +22,7 @@ players.PlayerAdded:Connect(function(player : Player)
 	player:SetAttribute("Cash",100)
 	player:SetAttribute("Level",1)
 	player:SetAttribute("Exp",0)
-	player:SetAttribute("ExpNextLevel",100)
+	player:SetAttribute("ExpNextLevel",42)
 	player:SetAttribute("Kills",0)
 	player:SetAttribute("Escapes",0)
 

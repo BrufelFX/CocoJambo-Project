@@ -16,7 +16,12 @@
     "StarterPlayer": {
       "StarterCharacterScripts": {
         "Loader": {
-          "$path": "src/LoaderClient"
+          "$path": "src/LoaderClientStarterCharacterScripts"
+        }
+      },
+      "StarterPlayerScripts": {
+        "Loader": {
+          "$path": "src/LoaderClientStarterPlayerScripts"
         }
       }
     }

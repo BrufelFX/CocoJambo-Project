@@ -48,7 +48,7 @@ function AntiCheatModule.DetectNoclip()
 
 			for _, part in pairs(touchingParts) do
 				if part.CanCollide and not part:IsDescendantOf(character) then
-					AntiCheat.Detected("Noclip")
+					AntiCheatModule.Ban()
 				end
 			end
 		end

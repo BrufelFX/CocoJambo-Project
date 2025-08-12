@@ -5,6 +5,8 @@ local GuiTabBarModule = {
 		[25] = Color3.fromRGB(160, 34, 34),
 		[40] = Color3.fromRGB(255, 224, 51)
 	},
+    lastCash = 0,
+    thread = nil,
 }
 
 local player = game.Players.LocalPlayer
@@ -27,8 +29,12 @@ local bar : Frame = barLevel:WaitForChild("Bar")
 local circleLevel : Frame = levelMoney:WaitForChild("CircleLevel")
 local levelText : TextLabel = circleLevel:WaitForChild("LevelText")
 local expAndExpNextLevel : TextLabel = levelMoney:WaitForChild("Exp/NextLevel")
+local cashFrame : Frame = levelMoney:WaitForChild("CashFrame")
+local cashCount : TextLabel = cashFrame:WaitForChild("CashCount")
 
 local TweenService = game:GetService("TweenService")
+
+local categoryGuiTopModule = require(script.Parent:WaitForChild("CategoryGuiTop"))
 
 player:GetAttributeChangedSignal("Exp"):Connect(function()
     GuiTabBarModule.UpdateExpAndExpNextLevel()
@@ -40,11 +46,36 @@ player:GetAttributeChangedSignal("Level"):Connect(function()
     GuiTabBarModule.UpdateLevelTextColor()
 end)
 
+player:GetAttributeChangedSignal("Cash"):Connect(function()
+    local newCash = player:GetAttribute("Cash")
+    if GuiTabBarModule.thread and coroutine.status(GuiTabBarModule.thread) ~= "dead" then
+        coroutine.close(GuiTabBarModule.thread)
+        GuiTabBarModule.thread = nil
+    end
+
+    GuiTabBarModule.thread = coroutine.create(function()
+        while GuiTabBarModule.lastCash ~= newCash do
+            if GuiTabBarModule.lastCash < newCash then
+                local diff = newCash - GuiTabBarModule.lastCash
+                GuiTabBarModule.lastCash += math.min(2, diff)
+            elseif GuiTabBarModule.lastCash > newCash then
+                local diff = newCash - GuiTabBarModule.lastCash
+                GuiTabBarModule.lastCash += math.min(2, diff)
+            end
+            cashCount.Text = tostring(GuiTabBarModule.lastCash)
+            task.wait(0.02)
+        end
+    end)
+    coroutine.resume(GuiTabBarModule.thread)
+end)
+
 function GuiTabBarModule.Load()
     GuiTabBarModule.UpdateExpAndExpNextLevel()
     GuiTabBarModule.UpdateTweenServiceBar()
     levelText.Text = tostring(player:GetAttribute("Level"))
+    cashCount.Text = tostring(player:GetAttribute("Cash"))
     GuiTabBarModule.UpdateLevelTextColor()
+    GuiTabBarModule.lastCash = tonumber(player:GetAttribute("Cash"))
 end
 
 function GuiTabBarModule.UpdateExpAndExpNextLevel()
@@ -83,7 +114,11 @@ end
 for _, buttons : ImageButton in pairs(topFrame:GetChildren()) do
     if buttons:IsA("ImageButton") then
         buttons.MouseButton1Click:Connect(function()
-            print(buttons.Name)
+            if buttons.Name == "PlayersInServerButton" then
+                categoryGuiTopModule.PlayerInServerSelect()
+            elseif buttons.Name == "StatsButton" then
+                categoryGuiTopModule.StatsSelect()
+            end
         end)
 
         buttons.MouseEnter:Connect(function()
@@ -96,8 +131,6 @@ for _, buttons : ImageButton in pairs(topFrame:GetChildren()) do
     end
 end
 
-if game:IsLoaded() then
-    GuiTabBarModule.Load()
-end
+GuiTabBarModule.Load()
 
 return GuiTabBarModule

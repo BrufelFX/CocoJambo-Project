@@ -41,7 +41,7 @@ function GameManagerModule.Start()
 	if GameManagerModule.countPlayer > 0 then
 		if GameManagerModule.countPlayer % 2 == 0 or GameManagerModule.countPlayer > 2 then
 			for _, v in pairs(players:GetPlayers()) do
-				table.insert(GameManagerModule.playersToMatch, {Gracz = v, opis = "NieWybrany"})
+				table.insert(GameManagerModule.playersToMatch, {Gracz = v, opis = "NieWybrany",status = "Alive"})
 			end
 			GameManagerModule.Los()
 		else
@@ -55,19 +55,10 @@ end
 
 function GameManagerModule.EndedLosy()
 	for _, graczeLista in pairs(GameManagerModule.playersToMatch) do
-		if graczeLista.opis == "NieWybrany" then
+		if graczeLista.opis == "NieWybrany" and graczeLista.status == "Alive" then
 			GameManagerModule.ChangeOpisPlayer(graczeLista.Gracz,"Wybrany")
 			graczeLista.Gracz:SetAttribute("Team",GameManagerModule.teams[1])
 			GameManagerModule.teamsUsed[1] += 1
-
-			for _, graczeListaKolejna in pairs(GameManagerModule.playersToMatch) do
-				if graczeListaKolejna.opis == "NieWybrany" then
-					local find = table.find(GameManagerModule.playersToMatch,graczeListaKolejna.Gracz)
-					if find then
-						table.remove(GameManagerModule.playersToMatch,find)
-					end
-				end
-			end
 		end
 	end
 
@@ -96,7 +87,7 @@ function GameManagerModule.LosKiller()
 	local PlayerNotChosed = {}
 
 	for _, dane in pairs(GameManagerModule.playersToMatch) do
-		if dane.opis == "NieWybrany" then
+		if dane.opis == "NieWybrany" and dane.status == "Alive" then
 			table.insert(PlayerNotChosed,dane.Gracz)
 		end
 	end
@@ -125,7 +116,7 @@ function GameManagerModule.LosSherif()
 	local PlayerNotChosed = {}
 
 	for _, dane in pairs(GameManagerModule.playersToMatch) do
-		if dane.opis == "NieWybrany" then
+		if dane.opis == "NieWybrany" and dane.status == "Alive" then
 			table.insert(PlayerNotChosed,dane.Gracz)
 		end
 	end
@@ -154,7 +145,7 @@ end
 
 function GameManagerModule.LosPerson()
 	for _, v in pairs(GameManagerModule.playersToMatch) do
-		if v.opis == "NieWybrany" then
+		if v.opis == "NieWybrany" and v.status == "Alive" then
 			GameManagerModule.teamsUsed[1] += 1
 			GameManagerModule.ChangeOpisPlayer(v.Gracz,"Wybrany")
 			v.Gracz:SetAttribute("Team",GameManagerModule.teams[1])
@@ -178,6 +169,14 @@ function GameManagerModule.ChangeOpisPlayer(player, NewOpis)
 		if dane.Gracz == player then
 			dane.opis = NewOpis
 			break
+		end
+	end
+end
+
+function GameManagerModule.Died(player : Player)
+	for _, dane in pairs(GameManagerModule.playersToMatch) do
+		if dane.Gracz == player then
+			dane.status = "Not Alive"
 		end
 	end
 end
