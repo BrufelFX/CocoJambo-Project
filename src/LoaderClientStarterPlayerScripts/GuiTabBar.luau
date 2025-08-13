@@ -7,6 +7,7 @@ local GuiTabBarModule = {
 	},
     lastCash = 0,
     thread = nil,
+    currentCategory = nil,
 }
 
 local player = game.Players.LocalPlayer
@@ -115,17 +116,35 @@ for _, buttons : ImageButton in pairs(topFrame:GetChildren()) do
     if buttons:IsA("TextButton") then
         buttons.MouseButton1Click:Connect(function()
             if buttons.Name == "PlayersInServerButton" then
-                categoryGuiTopModule.PlayerInServerSelect()
+                if GuiTabBarModule.currentCategory ~= "PlayersInServer" then
+                    GuiTabBarModule.currentCategory = "PlayersInServer"
+                    categoryGuiTopModule.PlayerInServerSelect()
+                end
             elseif buttons.Name == "StatsButton" then
-                categoryGuiTopModule.StatsSelect()
+                if GuiTabBarModule.currentCategory ~= "Stats" then
+                    GuiTabBarModule.currentCategory = "Stats"
+                    categoryGuiTopModule.StatsSelect()
+                end
             elseif buttons.Name == "InventoryButton" then
-                categoryGuiTopModule.InventorySelect()
+                if GuiTabBarModule.currentCategory ~= "Inventory" then
+                    GuiTabBarModule.currentCategory = "Inventory"
+                    categoryGuiTopModule.InventorySelect()
+                end
             elseif buttons.Name == "QuestsButton" then
-                categoryGuiTopModule.QuestsSelect()
+                if GuiTabBarModule.currentCategory ~= "Quests" then
+                    GuiTabBarModule.currentCategory = "Quests"
+                    categoryGuiTopModule.QuestsSelect()
+                end
             elseif buttons.Name == "ShopButton" then
-                categoryGuiTopModule.ShopSelect()
+                if GuiTabBarModule.currentCategory ~= "Shop" then
+                    GuiTabBarModule.currentCategory = "Shop"
+                    categoryGuiTopModule.ShopSelect()
+                end
             elseif buttons.Name == "SettingsButton" then
-                categoryGuiTopModule.SettingsSelect()
+                if GuiTabBarModule.currentCategory ~= "Settings" then
+                    GuiTabBarModule.currentCategory = "Settings"
+                    categoryGuiTopModule.SettingsSelect()
+                end
             end
         end)
 
@@ -138,6 +157,23 @@ for _, buttons : ImageButton in pairs(topFrame:GetChildren()) do
         end)
     end
 end
+
+
+local char = player.Character or player.CharacterAdded:Wait()
+local humanoid = char:WaitForChild("Humanoid")
+
+local categoryGuiTop = playerGui:WaitForChild("CategoryGuiTop")
+local exitButton : TextButton = categoryGuiTop:WaitForChild("Canva"):WaitForChild("Frame"):WaitForChild("Category"):WaitForChild("Exit")
+
+humanoid.Died:Connect(function()
+    GuiTabBarModule.currentCategory = nil
+    categoryGuiTopModule.Clear()
+    categoryGuiTopModule.DisableFrame()
+end)
+
+exitButton.MouseButton1Click:Connect(function()
+    GuiTabBarModule.currentCategory = nil
+end)
 
 GuiTabBarModule.Load()
 

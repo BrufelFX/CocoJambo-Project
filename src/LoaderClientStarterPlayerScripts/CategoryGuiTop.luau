@@ -38,6 +38,10 @@ function CategoryGuiTopModule.Clear()
     return true
 end
 
+function CategoryGuiTopModule.DisableFrame()
+    frame.Visible = false
+end
+
 function CategoryGuiTopModule.PlayerInServerSelect()
     if frame.Visible == false then
         frame.Visible = true
@@ -68,7 +72,7 @@ function CategoryGuiTopModule.PlayerInServerSelect()
         local thumType = Enum.ThumbnailType.AvatarBust
         local thumSize = Enum.ThumbnailSize.Size150x150
         local content = players:GetUserThumbnailAsync(userId,thumType,thumSize)
-        
+            
         image.Image = content
         userName.Text = "@"..playersInGame.Name
         displayName.Text = playersInGame.DisplayName
@@ -76,15 +80,14 @@ function CategoryGuiTopModule.PlayerInServerSelect()
         playerFrameIn.Name = userId
 
         if playersInGame:GetAttribute("Level") >= 5 and playersInGame:GetAttribute("Level") < 15 then
-			levelText.TextColor3 = CategoryGuiTopModule.LevelColor[5]
-		elseif playersInGame:GetAttribute("Level") >= 15 and playersInGame:GetAttribute("Level") < 25 then
-			levelText.TextColor3 = CategoryGuiTopModule.LevelColor[15]
-		elseif playersInGame:GetAttribute("Level") >= 25 and playersInGame:GetAttribute("Level") < 40 then
-			levelText.TextColor3 = CategoryGuiTopModule.LevelColor[25]
-		elseif playersInGame:GetAttribute("Level") >= 40 then
-			levelText.TextColor3 = CategoryGuiTopModule.LevelColor[40]
-		end
-
+            levelText.TextColor3 = CategoryGuiTopModule.LevelColor[5]
+        elseif playersInGame:GetAttribute("Level") >= 15 and playersInGame:GetAttribute("Level") < 25 then
+            levelText.TextColor3 = CategoryGuiTopModule.LevelColor[15]
+        elseif playersInGame:GetAttribute("Level") >= 25 and playersInGame:GetAttribute("Level") < 40 then
+            levelText.TextColor3 = CategoryGuiTopModule.LevelColor[25]
+        elseif playersInGame:GetAttribute("Level") >= 40 then
+            levelText.TextColor3 = CategoryGuiTopModule.LevelColor[40]
+        end
         categoryText.Text = "Players In Server"
         playerFrameIn.Parent = playersInServer
         playersInServer.Visible = true
@@ -178,7 +181,9 @@ end
 
 exitButton.MouseButton1Click:Connect(function()
     CategoryGuiTopModule.Clear()
-    frame.Visible = false
+    CategoryGuiTopModule.DisableFrame()
+    categoryText.Text = "Category"
+    
 end)
 
 
