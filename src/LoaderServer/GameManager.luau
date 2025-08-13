@@ -48,6 +48,7 @@ function GameManagerModule.Start()
 			print("Nie wystarczająca liczba osób")
 			wait(2)
 			print("Poczekam Troche Dłużej")
+			GameManagerModule.countPlayer = 0
 			GameManagerModule.Countdown(120,"Start")
 		end
 	end
@@ -65,6 +66,7 @@ function GameManagerModule.EndedLosy()
 	print("Gra jest gotowa do rundy")
 	print("Zebrani Gracze: ")
 	print(GameManagerModule.playersToMatch)
+	GameManagerModule.countPlayer = 0
 end
 
 function GameManagerModule.Los()
@@ -79,7 +81,19 @@ function GameManagerModule.Los()
 			if losPerson == true then
 				GameManagerModule.EndedLosy()
 			end
+		else
+			print("Nie udało się wylosować sherifa")
+			table.clear(GameManagerModule.playersToMatch)
+			GameManagerModule.countPlayer = 0
+			GameManagerModule.teamsUsed = {0,0,0}
+			GameManagerModule.Countdown(60,"Start")
 		end
+	else
+		print("Nie udało się wylosować killera")
+		table.clear(GameManagerModule.playersToMatch)
+		GameManagerModule.countPlayer = 0
+		GameManagerModule.teamsUsed = {0,0,0}
+		GameManagerModule.Countdown(60,"Start")
 	end
 end
 

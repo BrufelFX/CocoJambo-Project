@@ -5,7 +5,6 @@ for _, v in pairs(script:GetDescendants()) do
 				require(v)
 			end)
 		end)
-
 		if sucess then
 			warn("ModuleScripts Is Loaded - Client")
 		else

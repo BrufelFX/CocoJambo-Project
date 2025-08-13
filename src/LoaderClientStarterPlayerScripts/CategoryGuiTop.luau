@@ -112,6 +112,70 @@ function CategoryGuiTopModule.StatsSelect()
     statsFrame.Visible = true
 end
 
+function CategoryGuiTopModule.InventorySelect()
+    if frame.Visible == false then
+        frame.Visible = true
+    end
+
+    local result = CategoryGuiTopModule.Clear()
+
+    if not result then
+        return
+    end
+
+    local inventoryFrame : Frame = frame:WaitForChild("Inventory")
+    categoryText.Text = "Inventory"
+    inventoryFrame.Visible = true
+end
+
+function CategoryGuiTopModule.ShopSelect()
+    if frame.Visible == false then
+        frame.Visible = true
+    end
+
+    local result = CategoryGuiTopModule.Clear()
+
+    if not result then
+        return
+    end
+
+    local shopFrame : Frame = frame:WaitForChild("Shop")
+    categoryText.Text = "Shop"
+    shopFrame.Visible = true
+end
+
+function CategoryGuiTopModule.QuestsSelect()
+    if frame.Visible == false then
+        frame.Visible = true
+    end
+
+    local result = CategoryGuiTopModule.Clear()
+
+    if not result then
+        return
+    end
+
+    local questFrame : Frame = frame:WaitForChild("Quest")
+    categoryText.Text = "Quest"
+    questFrame.Visible = true
+end
+
+function CategoryGuiTopModule.SettingsSelect()
+    if frame.Visible == false then
+        frame.Visible = true
+    end
+
+    local result = CategoryGuiTopModule.Clear()
+
+    if not result then
+        return
+    end
+
+    local settingsFrame : Frame = frame:WaitForChild("Settings")
+    categoryText.Text = "Settings"
+    settingsFrame.Visible = true
+end
+
 exitButton.MouseButton1Click:Connect(function()
     CategoryGuiTopModule.Clear()
     frame.Visible = false

@@ -25,6 +25,8 @@ players.PlayerAdded:Connect(function(player : Player)
 	player:SetAttribute("ExpNextLevel",42)
 	player:SetAttribute("Kills",0)
 	player:SetAttribute("Escapes",0)
+	player:SetAttribute("Knife","None")
+	player:SetAttribute("Sherif","None")
 
 	player:GetAttributeChangedSignal("Exp"):Connect(function()
 		if player:GetAttribute("Exp") >= player:GetAttribute("ExpNextLevel") then

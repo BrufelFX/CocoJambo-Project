@@ -60,7 +60,7 @@ player:GetAttributeChangedSignal("Cash"):Connect(function()
                 GuiTabBarModule.lastCash += math.min(2, diff)
             elseif GuiTabBarModule.lastCash > newCash then
                 local diff = newCash - GuiTabBarModule.lastCash
-                GuiTabBarModule.lastCash += math.min(2, diff)
+                GuiTabBarModule.lastCash -= math.min(2, diff)
             end
             cashCount.Text = tostring(GuiTabBarModule.lastCash)
             task.wait(0.02)
@@ -99,25 +99,33 @@ function GuiTabBarModule.UpdateLevelTextColor()
 end
 
 function GuiTabBarModule.EffectMouseEnter(button)
-    local uiStroke : UIStroke = button:FindFirstChild("UIStroke")
+    local image : ImageLabel = button:FindFirstChild("image")
 
-    TweenService:Create(uiStroke,TweenInfo.new(0.1,Enum.EasingStyle.Sine,Enum.EasingDirection.In,0,false), {Color = Color3.fromRGB(255,255,255)}):Play()
+    TweenService:Create(image,TweenInfo.new(0.1,Enum.EasingStyle.Sine,Enum.EasingDirection.In,0,false), {Size = UDim2.fromScale(1.1,1.1)}):Play()
 end
 
 function GuiTabBarModule.EffectMouseLeave(button)
-    local uiStroke : UIStroke = button:FindFirstChild("UIStroke")
+    local image : ImageLabel = button:FindFirstChild("image")
 
-    TweenService:Create(uiStroke,TweenInfo.new(0.1,Enum.EasingStyle.Sine,Enum.EasingDirection.In,0,false), {Color = Color3.fromRGB(0,0,0)}):Play()
+    TweenService:Create(image,TweenInfo.new(0.1,Enum.EasingStyle.Sine,Enum.EasingDirection.In,0,false), {Size = UDim2.fromScale(1.0,1.0)}):Play()
 end
 
 
 for _, buttons : ImageButton in pairs(topFrame:GetChildren()) do
-    if buttons:IsA("ImageButton") then
+    if buttons:IsA("TextButton") then
         buttons.MouseButton1Click:Connect(function()
             if buttons.Name == "PlayersInServerButton" then
                 categoryGuiTopModule.PlayerInServerSelect()
             elseif buttons.Name == "StatsButton" then
                 categoryGuiTopModule.StatsSelect()
+            elseif buttons.Name == "InventoryButton" then
+                categoryGuiTopModule.InventorySelect()
+            elseif buttons.Name == "QuestsButton" then
+                categoryGuiTopModule.QuestsSelect()
+            elseif buttons.Name == "ShopButton" then
+                categoryGuiTopModule.ShopSelect()
+            elseif buttons.Name == "SettingsButton" then
+                categoryGuiTopModule.SettingsSelect()
             end
         end)
 
