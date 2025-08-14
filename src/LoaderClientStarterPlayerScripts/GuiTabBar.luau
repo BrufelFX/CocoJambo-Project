@@ -70,6 +70,10 @@ player:GetAttributeChangedSignal("Cash"):Connect(function()
     coroutine.resume(GuiTabBarModule.thread)
 end)
 
+player:GetAttributeChangedSignal("ActionCase"):Connect(function()
+    GuiTabBarModule.ActionCaseCall(player:GetAttribute("ActionCase"))
+end)
+
 function GuiTabBarModule.Load()
     GuiTabBarModule.UpdateExpAndExpNextLevel()
     GuiTabBarModule.UpdateTweenServiceBar()
@@ -155,6 +159,14 @@ for _, buttons : ImageButton in pairs(topFrame:GetChildren()) do
         buttons.MouseLeave:Connect(function()
             GuiTabBarModule.EffectMouseLeave(buttons)
         end)
+    end
+end
+
+function GuiTabBarModule.ActionCaseCall(bool : boolean)
+    if bool == true then
+        tabBarGui.Enabled = false
+    else
+        tabBarGui.Enabled = true
     end
 end
 

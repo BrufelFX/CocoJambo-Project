@@ -20,7 +20,7 @@ local scrollingFrame : ScrollingFrame = consoleFrame:WaitForChild("ScrollingFram
 local textInput : TextBox = consoleFrame:WaitForChild("TextInput")
 
 local AntiCheat = require(script.Parent:WaitForChild("AntiCheat"))
-local framework = require(rs:FindFirstChild("Framework"))
+local framework = require(rs.Modules:FindFirstChild("Framework"))
 
 local Players = game:GetService("Players")
 local us = game:GetService("UserInputService")

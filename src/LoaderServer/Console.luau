@@ -1,7 +1,7 @@
 local ConsoleModule = {}
 
 local rs = game.ReplicatedStorage
-local framework = require(rs:WaitForChild("Framework"))
+local framework = require(rs.Modules:WaitForChild("Framework"))
 local antiCheat = require(script.Parent:WaitForChild("AntiCheat"))
 
 local players = game:GetService("Players")

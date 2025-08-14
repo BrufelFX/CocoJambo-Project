@@ -18,6 +18,12 @@ players.PlayerAdded:Connect(function(player : Player)
 	local Data = Instance.new("Folder", player)
 	Data.Name = "Data"
 
+	local inventory = Instance.new("Folder", Data)
+	inventory.Name = "Inventory"
+	
+	player:SetAttribute("ActionCase", false)
+	player:SetAttribute("InGame", false)
+	player:SetAttribute("IsLoaded", true)
 	player:SetAttribute("Team","None")
 	player:SetAttribute("Cash",100)
 	player:SetAttribute("Level",1)

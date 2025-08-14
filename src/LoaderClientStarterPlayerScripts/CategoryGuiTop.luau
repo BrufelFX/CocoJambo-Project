@@ -38,6 +38,14 @@ function CategoryGuiTopModule.Clear()
     return true
 end
 
+function CategoryGuiTopModule.ActionCaseCall(bool : boolean)
+    if bool == true then
+        categoryGuiTop.Enabled = false
+    else
+        categoryGuiTop.Enabled = true
+    end
+end
+
 function CategoryGuiTopModule.DisableFrame()
     frame.Visible = false
 end
@@ -178,6 +186,10 @@ function CategoryGuiTopModule.SettingsSelect()
     categoryText.Text = "Settings"
     settingsFrame.Visible = true
 end
+
+player:GetAttributeChangedSignal("ActionCase"):Connect(function()
+    CategoryGuiTopModule.ActionCaseCall(player:GetAttribute("ActionCase"))
+end)
 
 exitButton.MouseButton1Click:Connect(function()
     CategoryGuiTopModule.Clear()

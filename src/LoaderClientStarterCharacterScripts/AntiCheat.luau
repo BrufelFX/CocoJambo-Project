@@ -5,7 +5,7 @@ local AntiCheatModule = {
 }
 local rs = game.ReplicatedStorage
 
-local framework = require(rs.Framework)
+local framework = require(rs.Modules.Framework)
 
 local antiCheatRemote : RemoteEvent = framework:GetRemoteEvent("AntiCheat")
 
