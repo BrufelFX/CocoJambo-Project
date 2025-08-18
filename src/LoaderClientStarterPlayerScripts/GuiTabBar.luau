@@ -33,6 +33,7 @@ local expAndExpNextLevel : TextLabel = levelMoney:WaitForChild("Exp/NextLevel")
 local cashFrame : Frame = levelMoney:WaitForChild("CashFrame")
 local cashCount : TextLabel = cashFrame:WaitForChild("CashCount")
 
+local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
 
 local categoryGuiTopModule = require(script.Parent:WaitForChild("CategoryGuiTop"))

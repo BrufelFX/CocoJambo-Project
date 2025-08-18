@@ -26,6 +26,8 @@ local statsFrame : Frame = frame:WaitForChild("Stats")
 local totalKills : Frame = statsFrame:WaitForChild("TotalKillsFrame")
 local totalEscapes : Frame = statsFrame:WaitForChild("TotalEscapesFrame")
 
+local GuiEffectModule = require(rs.Modules.GuiEffects)
+
 function CategoryGuiTopModule.Clear()
     for _, guis in pairs(frame:GetChildren()) do
         if guis:IsA("ScrollingFrame") or guis:IsA("Frame") and guis.Name ~= "Category" then
@@ -48,6 +50,8 @@ end
 
 function CategoryGuiTopModule.DisableFrame()
     frame.Visible = false
+    GuiEffectModule:Delete_Blur()
+    GuiEffectModule:Create_FovZoomOut()
 end
 
 function CategoryGuiTopModule.PlayerInServerSelect()
@@ -61,6 +65,8 @@ function CategoryGuiTopModule.PlayerInServerSelect()
         return
     end
 
+    GuiEffectModule:Create_Blur()
+    GuiEffectModule:Create_FovZoomIn()
     for _, framesInPlayerInServer in pairs(playersInServer:GetChildren()) do
         if framesInPlayerInServer:IsA("Frame") then
             framesInPlayerInServer:Destroy()
@@ -113,6 +119,9 @@ function CategoryGuiTopModule.StatsSelect()
         return
     end
 
+    GuiEffectModule:Create_Blur()
+    GuiEffectModule:Create_FovZoomIn()
+
     local textCountKills : TextLabel = totalKills:WaitForChild("Count")
     local TextCountEscapes : TextLabel = totalEscapes:WaitForChild("Count")
 
@@ -134,6 +143,9 @@ function CategoryGuiTopModule.InventorySelect()
         return
     end
 
+    GuiEffectModule:Create_Blur()
+    GuiEffectModule:Create_FovZoomIn()
+
     local inventoryFrame : Frame = frame:WaitForChild("Inventory")
     categoryText.Text = "Inventory"
     inventoryFrame.Visible = true
@@ -149,6 +161,9 @@ function CategoryGuiTopModule.ShopSelect()
     if not result then
         return
     end
+
+    GuiEffectModule:Create_Blur()
+    GuiEffectModule:Create_FovZoomIn()
 
     local shopFrame : Frame = frame:WaitForChild("Shop")
     categoryText.Text = "Shop"
@@ -166,6 +181,9 @@ function CategoryGuiTopModule.QuestsSelect()
         return
     end
 
+    GuiEffectModule:Create_Blur()
+    GuiEffectModule:Create_FovZoomIn()
+
     local questFrame : Frame = frame:WaitForChild("Quest")
     categoryText.Text = "Quest"
     questFrame.Visible = true
@@ -181,6 +199,9 @@ function CategoryGuiTopModule.SettingsSelect()
     if not result then
         return
     end
+
+    GuiEffectModule:Create_Blur()
+    GuiEffectModule:Create_FovZoomIn()
 
     local settingsFrame : Frame = frame:WaitForChild("Settings")
     categoryText.Text = "Settings"
