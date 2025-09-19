@@ -13,15 +13,15 @@ local player = game.Players.LocalPlayer
 local character = player.Character
 local humanoid: Humanoid = character:WaitForChild("Humanoid")
 
-function AntiCheatModule.GetCode(code: number)
-	AntiCheatModule.code = code
+function AntiCheatModule:GetCode(code: number)
+	self.code = code
 end
 
-function AntiCheatModule.Ban()
+function AntiCheatModule:Ban()
 	player:Kick("AntiCheat detected something unusual")
 end
 
-function AntiCheatModule.DetectTeleport()
+function AntiCheatModule:DetectTeleport()
 	if character then
 		local HumanoidRootPart = character:WaitForChild("HumanoidRootPart")
 
@@ -31,13 +31,13 @@ function AntiCheatModule.DetectTeleport()
 			local PositionSecond = HumanoidRootPart.Position
 
 			if (PositionSecond - PositionFirst).Magnitude > 60 then
-				AntiCheatModule.Ban()
+				self:Ban()
 			end
 		end)
 	end
 end
 
-function AntiCheatModule.DetectNoclip()
+function AntiCheatModule:DetectNoclip()
 	local character = player.Character
 
 	if character then
@@ -48,14 +48,14 @@ function AntiCheatModule.DetectNoclip()
 
 			for _, part in pairs(touchingParts) do
 				if part.CanCollide and not part:IsDescendantOf(character) then
-					AntiCheatModule.Ban()
+					self:Ban()
 				end
 			end
 		end
 	end
 end
 
-function AntiCheatModule.DetectFly()
+function AntiCheatModule:DetectFly()
 	local HumanoidRootPart = character.HumanoidRootPart
 
 	if HumanoidRootPart then
@@ -69,45 +69,45 @@ function AntiCheatModule.DetectFly()
 		local result = workspace:Raycast(origin, direction, raycastParams)
 
 		if not result and humanoid.FloorMaterial == Enum.Material.Air then
-			AntiCheatModule.timeFly += RunService.RenderStepped:Wait()
+			self.timeFly += RunService.RenderStepped:Wait()
 
-			if AntiCheatModule.timeFly > 2 then
-				AntiCheatModule.Ban()
+			if self.timeFly > 2 then
+				self:Ban()
 			end
 		else
-			AntiCheatModule.timeFly = 0
+			self.timeFly = 0
 		end
 	end
 end
 
 humanoid.Changed:Connect(function(state)
 	if state == "MaxHealth" then
-		AntiCheatModule.Ban()
+		AntiCheatModule:Ban()
 	elseif state == "JumpHeight" then
 		if humanoid.JumpHeight > 7.2 then
-			AntiCheatModule.Ban()
+			AntiCheatModule:Ban()
 		end
 	elseif state == "UseJumpPower" then
 		if humanoid.UseJumpPower == true then
-			AntiCheatModule.Ban()
+			AntiCheatModule:Ban()
 		end
 	elseif state == "WalkSpeed" then
 		if humanoid.WalkSpeed > 22 then
-			AntiCheatModule.Ban()
+			AntiCheatModule:Ban()
 		end
 	end
 end)
 
 character.ChildRemoved:Connect(function(child)
 	if child:IsA("MeshPart") then
-		AntiCheatModule.Ban()
+		AntiCheatModule:Ban()
 	end
 	if child:IsA("Humanoid") then
-		AntiCheatModule.Ban()
+		AntiCheatModule:Ban()
 	end
 	if child:IsA("BasePart") then
 		if child.Name == "HumanoidRootPart" then
-			AntiCheatModule.Ban()
+			AntiCheatModule:Ban()
 		end
 	end
 end)
@@ -122,10 +122,10 @@ character.ChildAdded:Connect(function(child)
 			if numberAntiCheat == AntiCheatModule.code then
 				print("Safe Added")
 			else
-				AntiCheatModule.Ban()
+				AntiCheatModule:Ban()
 			end
 		else
-			AntiCheatModule.Ban()
+			AntiCheatModule:Ban()
 		end
 	end
 end)
@@ -134,18 +134,18 @@ local backpack = player.Backpack
 
 backpack.ChildAdded:Connect(function(child)
 	if child:IsA("HopperBin") then
-		AntiCheatModule.Ban()
+		AntiCheatModule:Ban()
 	end
 end)
 
 RunService.RenderStepped:Connect(function(deltaTime)
-	AntiCheatModule.DetectTeleport()
-	AntiCheatModule.DetectNoclip()
-	AntiCheatModule.DetectFly()
+	AntiCheatModule:DetectTeleport()
+	AntiCheatModule:DetectNoclip()
+	AntiCheatModule:DetectFly()
 end)
 
 antiCheatRemote.OnClientEvent:Connect(function(code)
-	AntiCheatModule.GetCode(code)
+	AntiCheatModule:GetCode(code)
 end)
 
 return AntiCheatModule

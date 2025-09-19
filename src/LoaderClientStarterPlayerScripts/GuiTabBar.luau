@@ -75,42 +75,42 @@ player:GetAttributeChangedSignal("ActionCase"):Connect(function()
     GuiTabBarModule.ActionCaseCall(player:GetAttribute("ActionCase"))
 end)
 
-function GuiTabBarModule.Load()
-    GuiTabBarModule.UpdateExpAndExpNextLevel()
-    GuiTabBarModule.UpdateTweenServiceBar()
+function GuiTabBarModule:Load()
+    self:UpdateExpAndExpNextLevel()
+    self:UpdateTweenServiceBar()
     levelText.Text = tostring(player:GetAttribute("Level"))
     cashCount.Text = tostring(player:GetAttribute("Cash"))
-    GuiTabBarModule.UpdateLevelTextColor()
-    GuiTabBarModule.lastCash = tonumber(player:GetAttribute("Cash"))
+    self:UpdateLevelTextColor()
+    self.lastCash = tonumber(player:GetAttribute("Cash"))
 end
 
-function GuiTabBarModule.UpdateExpAndExpNextLevel()
+function GuiTabBarModule:UpdateExpAndExpNextLevel()
     expAndExpNextLevel.Text = tostring(math.ceil(player:GetAttribute("Exp"))).."/"..tostring(math.ceil(player:GetAttribute("ExpNextLevel")))
 end
 
-function GuiTabBarModule.UpdateTweenServiceBar()
+function GuiTabBarModule:UpdateTweenServiceBar()
     TweenService:Create(bar,TweenInfo.new(0.2,Enum.EasingStyle.Sine,Enum.EasingDirection.In,0,false),{Size = UDim2.fromScale(player:GetAttribute("Exp") / player:GetAttribute("ExpNextLevel"),1)}):Play()
 end
 
-function GuiTabBarModule.UpdateLevelTextColor()
+function GuiTabBarModule:UpdateLevelTextColor()
     if player:GetAttribute("Level") >= 5 and player:GetAttribute("Level") < 15 then
-		levelText.TextColor3 = GuiTabBarModule.LevelColor[5]
+		levelText.TextColor3 = self.LevelColor[5]
 	elseif player:GetAttribute("Level") >= 15 and player:GetAttribute("Level") < 25 then
-		levelText.TextColor3 = GuiTabBarModule.LevelColor[15]
+		levelText.TextColor3 = self.LevelColor[15]
 	elseif player:GetAttribute("Level") >= 25 and player:GetAttribute("Level") < 40 then
-		levelText.TextColor3 = GuiTabBarModule.LevelColor[25]
+		levelText.TextColor3 = self.LevelColor[25]
 	elseif player:GetAttribute("Level") >= 40 then
-		levelText.TextColor3 = GuiTabBarModule.LevelColor[40]
+		levelText.TextColor3 = self.LevelColor[40]
 	end
 end
 
-function GuiTabBarModule.EffectMouseEnter(button)
+function GuiTabBarModule:EffectMouseEnter(button)
     local image : ImageLabel = button:FindFirstChild("image")
 
     TweenService:Create(image,TweenInfo.new(0.1,Enum.EasingStyle.Sine,Enum.EasingDirection.In,0,false), {Size = UDim2.fromScale(1.1,1.1)}):Play()
 end
 
-function GuiTabBarModule.EffectMouseLeave(button)
+function GuiTabBarModule:EffectMouseLeave(button)
     local image : ImageLabel = button:FindFirstChild("image")
 
     TweenService:Create(image,TweenInfo.new(0.1,Enum.EasingStyle.Sine,Enum.EasingDirection.In,0,false), {Size = UDim2.fromScale(1.0,1.0)}):Play()
@@ -123,42 +123,42 @@ for _, buttons : ImageButton in pairs(topFrame:GetChildren()) do
             if buttons.Name == "PlayersInServerButton" then
                 if GuiTabBarModule.currentCategory ~= "PlayersInServer" then
                     GuiTabBarModule.currentCategory = "PlayersInServer"
-                    categoryGuiTopModule.PlayerInServerSelect()
+                    categoryGuiTopModule:PlayerInServerSelect()
                 end
             elseif buttons.Name == "StatsButton" then
                 if GuiTabBarModule.currentCategory ~= "Stats" then
                     GuiTabBarModule.currentCategory = "Stats"
-                    categoryGuiTopModule.StatsSelect()
+                    categoryGuiTopModule:StatsSelect()
                 end
             elseif buttons.Name == "InventoryButton" then
                 if GuiTabBarModule.currentCategory ~= "Inventory" then
                     GuiTabBarModule.currentCategory = "Inventory"
-                    categoryGuiTopModule.InventorySelect()
+                    categoryGuiTopModule:InventorySelect()
                 end
             elseif buttons.Name == "QuestsButton" then
                 if GuiTabBarModule.currentCategory ~= "Quests" then
                     GuiTabBarModule.currentCategory = "Quests"
-                    categoryGuiTopModule.QuestsSelect()
+                    categoryGuiTopModule:QuestsSelect()
                 end
             elseif buttons.Name == "ShopButton" then
                 if GuiTabBarModule.currentCategory ~= "Shop" then
                     GuiTabBarModule.currentCategory = "Shop"
-                    categoryGuiTopModule.ShopSelect()
+                    categoryGuiTopModule:ShopSelect()
                 end
             elseif buttons.Name == "SettingsButton" then
                 if GuiTabBarModule.currentCategory ~= "Settings" then
                     GuiTabBarModule.currentCategory = "Settings"
-                    categoryGuiTopModule.SettingsSelect()
+                    categoryGuiTopModule:SettingsSelect()
                 end
             end
         end)
 
         buttons.MouseEnter:Connect(function()
-            GuiTabBarModule.EffectMouseEnter(buttons)
+            GuiTabBarModule:EffectMouseEnter(buttons)
         end)
 
         buttons.MouseLeave:Connect(function()
-            GuiTabBarModule.EffectMouseLeave(buttons)
+            GuiTabBarModule:EffectMouseLeave(buttons)
         end)
     end
 end
@@ -180,14 +180,14 @@ local exitButton : TextButton = categoryGuiTop:WaitForChild("Canva"):WaitForChil
 
 humanoid.Died:Connect(function()
     GuiTabBarModule.currentCategory = nil
-    categoryGuiTopModule.Clear()
-    categoryGuiTopModule.DisableFrame()
+    categoryGuiTopModule:Clear()
+    categoryGuiTopModule:DisableFrame()
 end)
 
 exitButton.MouseButton1Click:Connect(function()
     GuiTabBarModule.currentCategory = nil
 end)
 
-GuiTabBarModule.Load()
+GuiTabBarModule:Load()
 
 return GuiTabBarModule

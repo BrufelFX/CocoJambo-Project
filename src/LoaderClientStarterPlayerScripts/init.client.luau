@@ -1,14 +1,13 @@
 for _, v in pairs(script:GetDescendants()) do
 	if v:IsA("ModuleScript") then
-		local sucess, error = pcall(function()
-			task.spawn(function()
-				require(v)
-			end)
+		local success, errorMes = pcall(function()
+			require(v)
 		end)
-		if sucess then
-			warn("ModuleScripts Is Loaded - Client")
+		
+		if success then
+			print("✅", "("..v.Name..")", "-", "Module ClientPlayer Is Loaded.")
 		else
-			warn("Error Loader with ModuleScripts - Client")
+			warn("❌", "("..v.Name..")", "-", "Module ClientPlayer Is Not Loaded.", errorMes)
 		end
 	end
 end

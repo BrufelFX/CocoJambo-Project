@@ -28,7 +28,7 @@ local totalEscapes : Frame = statsFrame:WaitForChild("TotalEscapesFrame")
 
 local GuiEffectModule = require(rs.Modules.GuiEffects)
 
-function CategoryGuiTopModule.Clear()
+function CategoryGuiTopModule:Clear()
     for _, guis in pairs(frame:GetChildren()) do
         if guis:IsA("ScrollingFrame") or guis:IsA("Frame") and guis.Name ~= "Category" then
             if guis.Visible == true then
@@ -40,7 +40,7 @@ function CategoryGuiTopModule.Clear()
     return true
 end
 
-function CategoryGuiTopModule.ActionCaseCall(bool : boolean)
+function CategoryGuiTopModule:ActionCaseCall(bool : boolean)
     if bool == true then
         categoryGuiTop.Enabled = false
     else
@@ -48,18 +48,18 @@ function CategoryGuiTopModule.ActionCaseCall(bool : boolean)
     end
 end
 
-function CategoryGuiTopModule.DisableFrame()
+function CategoryGuiTopModule:DisableFrame()
     frame.Visible = false
     GuiEffectModule:Delete_Blur()
     GuiEffectModule:Create_FovZoomOut()
 end
 
-function CategoryGuiTopModule.PlayerInServerSelect()
+function CategoryGuiTopModule:PlayerInServerSelect()
     if frame.Visible == false then
         frame.Visible = true
     end
 
-    local result = CategoryGuiTopModule.Clear()
+    local result = self:Clear()
 
     if not result then
         return
@@ -94,13 +94,13 @@ function CategoryGuiTopModule.PlayerInServerSelect()
         playerFrameIn.Name = userId
 
         if playersInGame:GetAttribute("Level") >= 5 and playersInGame:GetAttribute("Level") < 15 then
-            levelText.TextColor3 = CategoryGuiTopModule.LevelColor[5]
+            levelText.TextColor3 = self.LevelColor[5]
         elseif playersInGame:GetAttribute("Level") >= 15 and playersInGame:GetAttribute("Level") < 25 then
-            levelText.TextColor3 = CategoryGuiTopModule.LevelColor[15]
+            levelText.TextColor3 = self.LevelColor[15]
         elseif playersInGame:GetAttribute("Level") >= 25 and playersInGame:GetAttribute("Level") < 40 then
-            levelText.TextColor3 = CategoryGuiTopModule.LevelColor[25]
+            levelText.TextColor3 = self.LevelColor[25]
         elseif playersInGame:GetAttribute("Level") >= 40 then
-            levelText.TextColor3 = CategoryGuiTopModule.LevelColor[40]
+            levelText.TextColor3 = self.LevelColor[40]
         end
         categoryText.Text = "Players In Server"
         playerFrameIn.Parent = playersInServer
@@ -108,12 +108,12 @@ function CategoryGuiTopModule.PlayerInServerSelect()
     end
 end
 
-function CategoryGuiTopModule.StatsSelect()
+function CategoryGuiTopModule:StatsSelect()
     if frame.Visible == false then
         frame.Visible = true
     end
 
-    local result = CategoryGuiTopModule.Clear()
+    local result = self:Clear()
 
     if not result then
         return
@@ -132,12 +132,12 @@ function CategoryGuiTopModule.StatsSelect()
     statsFrame.Visible = true
 end
 
-function CategoryGuiTopModule.InventorySelect()
+function CategoryGuiTopModule:InventorySelect()
     if frame.Visible == false then
         frame.Visible = true
     end
 
-    local result = CategoryGuiTopModule.Clear()
+    local result = self:Clear()
 
     if not result then
         return
@@ -151,12 +151,12 @@ function CategoryGuiTopModule.InventorySelect()
     inventoryFrame.Visible = true
 end
 
-function CategoryGuiTopModule.ShopSelect()
+function CategoryGuiTopModule:ShopSelect()
     if frame.Visible == false then
         frame.Visible = true
     end
 
-    local result = CategoryGuiTopModule.Clear()
+    local result = self:Clear()
 
     if not result then
         return
@@ -170,12 +170,12 @@ function CategoryGuiTopModule.ShopSelect()
     shopFrame.Visible = true
 end
 
-function CategoryGuiTopModule.QuestsSelect()
+function CategoryGuiTopModule:QuestsSelect()
     if frame.Visible == false then
         frame.Visible = true
     end
 
-    local result = CategoryGuiTopModule.Clear()
+    local result = self:Clear()
 
     if not result then
         return
@@ -189,12 +189,12 @@ function CategoryGuiTopModule.QuestsSelect()
     questFrame.Visible = true
 end
 
-function CategoryGuiTopModule.SettingsSelect()
+function CategoryGuiTopModule:SettingsSelect()
     if frame.Visible == false then
         frame.Visible = true
     end
 
-    local result = CategoryGuiTopModule.Clear()
+    local result = self:Clear()
 
     if not result then
         return
@@ -209,12 +209,12 @@ function CategoryGuiTopModule.SettingsSelect()
 end
 
 player:GetAttributeChangedSignal("ActionCase"):Connect(function()
-    CategoryGuiTopModule.ActionCaseCall(player:GetAttribute("ActionCase"))
+    CategoryGuiTopModule:ActionCaseCall(player:GetAttribute("ActionCase"))
 end)
 
 exitButton.MouseButton1Click:Connect(function()
-    CategoryGuiTopModule.Clear()
-    CategoryGuiTopModule.DisableFrame()
+    CategoryGuiTopModule:Clear()
+    CategoryGuiTopModule:DisableFrame()
     categoryText.Text = "Category"
     
 end)

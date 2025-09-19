@@ -79,6 +79,6 @@ function DataPlayer.NextLevel(player)
 	player:SetAttribute("Level",player:GetAttribute("Level") + 1) 
 end
 
-GameManager.Countdown(30,"Start")
+GameManager:Countdown(30,"Start")
 
 return DataPlayer
