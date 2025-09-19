@@ -94,13 +94,13 @@ function CategoryGuiTopModule:PlayerInServerSelect()
         playerFrameIn.Name = userId
 
         if playersInGame:GetAttribute("Level") >= 5 and playersInGame:GetAttribute("Level") < 15 then
-            levelText.TextColor3 = self.LevelColor[5]
+            levelText.TextColor3 = CategoryGuiTopModule.LevelColor[5]
         elseif playersInGame:GetAttribute("Level") >= 15 and playersInGame:GetAttribute("Level") < 25 then
-            levelText.TextColor3 = self.LevelColor[15]
+            levelText.TextColor3 = CategoryGuiTopModule.LevelColor[15]
         elseif playersInGame:GetAttribute("Level") >= 25 and playersInGame:GetAttribute("Level") < 40 then
-            levelText.TextColor3 = self.LevelColor[25]
+            levelText.TextColor3 = CategoryGuiTopModule.LevelColor[25]
         elseif playersInGame:GetAttribute("Level") >= 40 then
-            levelText.TextColor3 = self.LevelColor[40]
+            levelText.TextColor3 = CategoryGuiTopModule.LevelColor[40]
         end
         categoryText.Text = "Players In Server"
         playerFrameIn.Parent = playersInServer

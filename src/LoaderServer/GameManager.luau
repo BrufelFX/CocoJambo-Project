@@ -27,46 +27,46 @@ function GameManagerModule:Countdown(Sec,GameType)
 		end
 	end
 
-	self.thread = coroutine.create(CountdownTask)
-	coroutine.resume(self.thread)
+	GameManagerModule.thread = coroutine.create(CountdownTask)
+	coroutine.resume(GameManagerModule.thread)
 end
 
 function GameManagerModule:Start()
 	local players = game:GetService("Players")
 
 	for i in pairs(players:GetPlayers()) do
-		self.countPlayer += 1
+		GameManagerModule.countPlayer += 1
 	end
 
-	if self.countPlayer > 0 then
-		if self.countPlayer % 2 == 0 or self.countPlayer > 2 then
+	if GameManagerModule.countPlayer > 0 then
+		if GameManagerModule.countPlayer % 2 == 0 or GameManagerModule.countPlayer > 2 then
 			for _, v in pairs(players:GetPlayers()) do
-				table.insert(self.playersToMatch, {Gracz = v, opis = "NieWybrany",status = "Alive"})
+				table.insert(GameManagerModule.playersToMatch, {Gracz = v, opis = "NieWybrany",status = "Alive"})
 			end
 			self:Los()
 		else
 			print("Nie wystarczająca liczba osób")
 			wait(2)
 			print("Poczekam Troche Dłużej")
-			self.countPlayer = 0
+			GameManagerModule.countPlayer = 0
 			self:Countdown(120,"Start")
 		end
 	end
 end
 
 function GameManagerModule:EndedLosy()
-	for _, graczeLista in pairs(self.playersToMatch) do
+	for _, graczeLista in pairs(GameManagerModule.playersToMatch) do
 		if graczeLista.opis == "NieWybrany" and graczeLista.status == "Alive" then
 			self:ChangeOpisPlayer(graczeLista.Gracz,"Wybrany")
-			graczeLista.Gracz:SetAttribute("Team",self.teams[1])
-			self.teamsUsed[1] += 1
+			graczeLista.Gracz:SetAttribute("Team",GameManagerModule.teams[1])
+			GameManagerModule.teamsUsed[1] += 1
 		end
 	end
 
 	print("Gra jest gotowa do rundy")
 	print("Zebrani Gracze: ")
-	print(self.playersToMatch)
-	self.countPlayer = 0
+	print(GameManagerModule.playersToMatch)
+	GameManagerModule.countPlayer = 0
 end
 
 function GameManagerModule:Los()
@@ -82,23 +82,23 @@ function GameManagerModule:Los()
 				self:EndedLosy()
 			else
 				print("Nie udało się wylosować person")
-				table.clear(self.playersToMatch)
-				self.countPlayer = 0
-				self.teamsUsed = {0,0,0}
+				table.clear(GameManagerModule.playersToMatch)
+				GameManagerModule.countPlayer = 0
+				GameManagerModule.teamsUsed = {0,0,0}
 				self:Countdown(60,"Start")
 			end
 		else
 			print("Nie udało się wylosować sherifa")
-			table.clear(self.playersToMatch)
-			self.countPlayer = 0
-			self.teamsUsed = {0,0,0}
+			table.clear(GameManagerModule.playersToMatch)
+			GameManagerModule.countPlayer = 0
+			GameManagerModule.teamsUsed = {0,0,0}
 			self:Countdown(60,"Start")
 		end
 	else
 		print("Nie udało się wylosować killera")
-		table.clear(self.playersToMatch)
-		self.countPlayer = 0
-		self.teamsUsed = {0,0,0}
+		table.clear(GameManagerModule.playersToMatch)
+		GameManagerModule.countPlayer = 0
+		GameManagerModule.teamsUsed = {0,0,0}
 		self:Countdown(60,"Start")
 	end
 end
@@ -106,7 +106,7 @@ end
 function GameManagerModule:LosKiller()
 	local PlayerNotChosed = {}
 
-	for _, dane in pairs(self.playersToMatch) do
+	for _, dane in pairs(GameManagerModule.playersToMatch) do
 		if dane.opis == "NieWybrany" and dane.status == "Alive" then
 			table.insert(PlayerNotChosed,dane.Gracz)
 		end
@@ -118,11 +118,11 @@ function GameManagerModule:LosKiller()
 
 	local PickUpRandomKiller: Player = PlayerNotChosed[math.random(1, #PlayerNotChosed)]
 
-	if self.teamsCountMax[2] > self.teamsUsed[2] then
+	if GameManagerModule.teamsCountMax[2] > GameManagerModule.teamsUsed[2] then
 		if PickUpRandomKiller then
 			self:ChangeOpisPlayer(PickUpRandomKiller,"Wybrany")
-			PickUpRandomKiller:SetAttribute("Team",self.teams[2])
-			self.teamsUsed[2] = 1
+			PickUpRandomKiller:SetAttribute("Team",GameManagerModule.teams[2])
+			GameManagerModule.teamsUsed[2] = 1
 			print("Wybrano killera " .. PickUpRandomKiller.Name)
 			table.clear(PlayerNotChosed)
 		else
@@ -135,7 +135,7 @@ end
 function GameManagerModule:LosSherif()
 	local PlayerNotChosed = {}
 
-	for _, dane in pairs(self.playersToMatch) do
+	for _, dane in pairs(GameManagerModule.playersToMatch) do
 		if dane.opis == "NieWybrany" and dane.status == "Alive" then
 			table.insert(PlayerNotChosed,dane.Gracz)
 		end
@@ -147,11 +147,11 @@ function GameManagerModule:LosSherif()
 
 	local PickUpRandomSherif: Player = PlayerNotChosed[math.random(1, #PlayerNotChosed)]
 	
-	if self.teamsCountMax[3] > self.teamsUsed[3] then
+	if GameManagerModule.teamsCountMax[3] > GameManagerModule.teamsUsed[3] then
 		if PickUpRandomSherif then
 			self:ChangeOpisPlayer(PickUpRandomSherif,"Wybrany")
-			PickUpRandomSherif:SetAttribute("Team",self.teams[3])
-			self.teamsUsed[3] = 1
+			PickUpRandomSherif:SetAttribute("Team",GameManagerModule.teams[3])
+			GameManagerModule.teamsUsed[3] = 1
 			print("Wybrano sherif " .. PickUpRandomSherif.Name)
 			table.clear(PlayerNotChosed)
 		else
@@ -164,11 +164,11 @@ function GameManagerModule:LosSherif()
 end
 
 function GameManagerModule:LosPerson()
-	for _, v in pairs(self.playersToMatch) do
+	for _, v in pairs(GameManagerModule.playersToMatch) do
 		if v.opis == "NieWybrany" and v.status == "Alive" then
-			self.teamsUsed[1] += 1
+			GameManagerModule.teamsUsed[1] += 1
 			self:ChangeOpisPlayer(v.Gracz,"Wybrany")
-			v.Gracz:SetAttribute("Team",self.teams[1])
+			v.Gracz:SetAttribute("Team",GameManagerModule.teams[1])
 		end
 	end
 
@@ -176,7 +176,7 @@ function GameManagerModule:LosPerson()
 end
 
 function GameManagerModule:GetOpisFromPlayer(player)
-	for _, dane in pairs(self.playersToMatch) do
+	for _, dane in pairs(GameManagerModule.playersToMatch) do
 		if dane.Gracz == player then
 			return dane.opis
 		end
@@ -185,7 +185,7 @@ function GameManagerModule:GetOpisFromPlayer(player)
 end
 
 function GameManagerModule:ChangeOpisPlayer(player, NewOpis)
-	for _, dane in pairs(self.playersToMatch) do
+	for _, dane in pairs(GameManagerModule.playersToMatch) do
 		if dane.Gracz == player then
 			dane.opis = NewOpis
 			break
@@ -194,7 +194,7 @@ function GameManagerModule:ChangeOpisPlayer(player, NewOpis)
 end
 
 function GameManagerModule:Died(player : Player)
-	for _, dane in pairs(self.playersToMatch) do
+	for _, dane in pairs(GameManagerModule.playersToMatch) do
 		if dane.Gracz == player then
 			dane.status = "Not Alive"
 		end

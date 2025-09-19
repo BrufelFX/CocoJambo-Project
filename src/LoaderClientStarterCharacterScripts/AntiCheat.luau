@@ -14,7 +14,7 @@ local character = player.Character
 local humanoid: Humanoid = character:WaitForChild("Humanoid")
 
 function AntiCheatModule:GetCode(code: number)
-	self.code = code
+	AntiCheatModule.code = code
 end
 
 function AntiCheatModule:Ban()
@@ -69,13 +69,13 @@ function AntiCheatModule:DetectFly()
 		local result = workspace:Raycast(origin, direction, raycastParams)
 
 		if not result and humanoid.FloorMaterial == Enum.Material.Air then
-			self.timeFly += RunService.RenderStepped:Wait()
+			AntiCheatModule.timeFly += RunService.RenderStepped:Wait()
 
-			if self.timeFly > 2 then
+			if AntiCheatModule.timeFly > 2 then
 				self:Ban()
 			end
 		else
-			self.timeFly = 0
+			AntiCheatModule.timeFly = 0
 		end
 	end
 end

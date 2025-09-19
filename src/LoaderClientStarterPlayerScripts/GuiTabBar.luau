@@ -81,7 +81,7 @@ function GuiTabBarModule:Load()
     levelText.Text = tostring(player:GetAttribute("Level"))
     cashCount.Text = tostring(player:GetAttribute("Cash"))
     self:UpdateLevelTextColor()
-    self.lastCash = tonumber(player:GetAttribute("Cash"))
+    GuiTabBarModule.lastCash = tonumber(player:GetAttribute("Cash"))
 end
 
 function GuiTabBarModule:UpdateExpAndExpNextLevel()
@@ -94,13 +94,13 @@ end
 
 function GuiTabBarModule:UpdateLevelTextColor()
     if player:GetAttribute("Level") >= 5 and player:GetAttribute("Level") < 15 then
-		levelText.TextColor3 = self.LevelColor[5]
+		levelText.TextColor3 = GuiTabBarModule.LevelColor[5]
 	elseif player:GetAttribute("Level") >= 15 and player:GetAttribute("Level") < 25 then
-		levelText.TextColor3 = self.LevelColor[15]
+		levelText.TextColor3 = GuiTabBarModule.LevelColor[15]
 	elseif player:GetAttribute("Level") >= 25 and player:GetAttribute("Level") < 40 then
-		levelText.TextColor3 = self.LevelColor[25]
+		levelText.TextColor3 = GuiTabBarModule.LevelColor[25]
 	elseif player:GetAttribute("Level") >= 40 then
-		levelText.TextColor3 = self.LevelColor[40]
+		levelText.TextColor3 = GuiTabBarModule.LevelColor[40]
 	end
 end
 
